@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" monitorInterval="1800"><!-- TRACE DEBUG INFO WARN ERROR FATAL OFF -->
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d-[%p]-[%t] [%c] : %m%n" charset="UTF-8"/>
+        </Console>
+        <RollingFile name="rollingFile" fileName="logs/pmsapp.log"
+            filePattern="logs/pmsapp-%d{yyyy-MM-dd-HH}-%i.log.gz">
+            <PatternLayout pattern="%d-[%p]-[%t] [%c] %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

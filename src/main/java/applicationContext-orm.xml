@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName">
+
+    <bean id="wall-filter-config" class="com.alibaba.druid.wall.WallConfig" init-method="init">
+        <!-- 指定配置装载的目录  -->
+        <property name="dir" value="META-INF/druid/wall/mysql"></property>
+        <property name="truncateAllow" value="false"></property>
+        <property name="createTableAllow" value="false"></property>
+        <property name="alterTableAllow" value="false"></property>
+        <property name="dropTableAllow" value="false"></property>
+        <property name="strictSyntaxCheck" value="false"></property>
+    </bean>
+
+    <!-- 防SQL注入 拦截器 -->
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="dbType" value="mysql"></property>
+        <property name="config" ref="wall-filter-config"></property>
+        <property name="logViolation" value="true"></property>
+        <property name="throwException" value="false"></property>
+    </bean>
+
+    <!-- LOG 拦截器 -->
+    <bean id="log-filter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+        <!-- 输出可执行的SQL -->
+        <property name="statementExecutableSqlLogEnable" value="true"></property>
+        
+        <property name="dataSourceLogEnabled" value="false"></property>
+        <property name="connectionLogEnabled" value="false"></property>
+        <property name="connectionLogErrorEnabled" value="true"></property><!-- true -->
+        <property name="statementLogEnabled" value="false"></property>
+        <property name="statementLogErrorEnabled" value="true"></property><!-- true -->
+        <property name="resultSetLogEnabled" value="false"></property>
+        <property name="resultSetLogErrorEnabled" value="true"></property><!-- true -->
+        <property name="connectionConnectBeforeLogEnabled" value="false"></property>
+        <property name="connectionConnectAfterLogEnabled" value="false"></property>
+        <property name="connectionCommitAfterLogEnabled" value="false"></property>
+        <property name="connectionRollbackAfterLogEnabled" value="true"></property><!-- true -->
+        <property name="connectionCloseAfterLogEnabled" value="false"></property>
+        <property name="statementCreateAfterLogEnabled" value="false"></property>
+        <property name="statementPrepareAfterLogEnabled" value="false"></property>
+        <property name="statementPrepareCallAfterLogEnabled" value="false"></property>
+        <property name="statementExecuteAfterLogEnabled" value="false"></property>
+        <property name="statementExecuteQueryAfterLogEnabled" value="false"></property>
+        <property name="statementExecuteUpdateAfterLogEnabled" value="false"></property>
+        <property name="statementExecuteBatchAfterLogEnabled" value="false"></property>
+        <property name="statementCloseAfterLogEnabled" value="false"></property>
+        <property name="statementParameterSetLogEnabled" value="true"></property><!-- true -->
+        <property name="resultSetNextAfterLogEnabled" value="false"></property>
+        <property name="resultSetOpenAfterLogEnabled" value="false"></property>
+        <property name="resultSetCloseAfterLogEnabled" value="false"></property>
+    </bean>
+
+    <!-- 统计监控信息 拦截器 -->
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="slowSqlMillis" value="2000"></property>
+        <property name="logSlowSql" value="true"></property>
+    </bean>
+
+    <!-- data source -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+        init-method="init" destroy-method="close">
+        
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${db.url}"></property>
+        <property name="username" value="${db.username}"></property>
+        <property name="password" value="${db.password}"></property>
+        
+        <!-- 配置监控统计拦截的filters -->
+        <!--
+        <property name="filters" value="wall,stat"></property>
+        -->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="wall-filter"/>
+                <ref bean="log-filter"/>
+                <ref bean="stat-filter"/>
+            </list>
+        </property>
+        
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="maxActive" value="20"></property>
+        <property name="initialSize" value="1"></property>
+        <property name="minIdle" value="1"></property>
+        
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000"></property>
+        
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"></property>
+        
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testWhileIdle" value="true"></property>
+        <property name="testOnBorrow" value="false"></property>
+        <property name="testOnReturn" value="false"></property>
+        
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="false"></property>
+        <property name="maxOpenPreparedStatements" value="20"></property>
+        <!-- 如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。分库分表较多的数据库，建议配置为false。 -->
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.connection.autocommit">false</prop>
+                <prop key="hibernate.cache.use_query_cache">false</prop><!-- 关闭查询缓存 -->
+                <prop key="hibernate.cache.use_second_level_cache">false</prop><!-- 关闭二级缓存 -->
+            </props>
+        </property>
+        <property name="mappingResources">
+            <array>
+                <value></value>
+                <value></value>
+            </array>
+        </property>
+    </bean>
+
+</beans>
