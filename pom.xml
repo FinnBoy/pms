@@ -21,6 +21,9 @@
         <tomcat.version>7.0.59</tomcat.version>
         <jetty.version>7.6.21.v20160908</jetty.version>
         
+        <!-- hibernate 4.2.x + Spring 3.x integration success. cause: -->
+        <!-- hibernate 4.2.x: org.hibernate.service.jta.platform.spi.JtaPlatform -->
+        <!-- hibernate 4.3.x: org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform -->
         <hibernate.version>4.2.21.Final</hibernate.version><!-- 5.2.9.Final --><!-- 4.3.11.Final -->
         <hibernate3.version>3.3.2.GA</hibernate3.version>
         <hibernate2.version>2.1.8</hibernate2.version>
