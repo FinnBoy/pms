@@ -21,7 +21,7 @@
         <tomcat.version>7.0.59</tomcat.version>
         <jetty.version>7.6.21.v20160908</jetty.version>
         
-        <hibernate.version>4.3.11.Final</hibernate.version><!-- 5.2.9.Final --><!-- 4.3.11.Final -->
+        <hibernate.version>4.2.21.Final</hibernate.version><!-- 5.2.9.Final --><!-- 4.3.11.Final -->
         <hibernate3.version>3.3.2.GA</hibernate3.version>
         <hibernate2.version>2.1.8</hibernate2.version>
         
@@ -41,6 +41,17 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>cn.com.finn.module</groupId>
+            <artifactId>exception</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.com.finn.module</groupId>
+            <artifactId>util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -164,6 +175,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -181,6 +197,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.18</version>
         </dependency>
 
         <!-- old version hibernate

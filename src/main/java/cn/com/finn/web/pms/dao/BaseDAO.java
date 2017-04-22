@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
  * @author Finn Zhao
  * @version 2017年4月23日
  */
-public abstract class BaseDAO<PO> {
+public abstract class BaseDAO<T> {
 
     private SessionFactory sessionFactory;
 
