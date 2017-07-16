@@ -234,7 +234,8 @@
                  org.jboss.logging.LoggerProviders
                  org.jboss.logging.Logger
                  org.hibernate.internal.CoreMessageLogger_$logger
-             version: 4.2.X
+             version(hibernate core): 4.2.X
+             version(jboss logging):3.1.0.GA
           -->
         <dependency>
             <groupId>org.hibernate</groupId>
