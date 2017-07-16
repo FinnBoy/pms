@@ -162,6 +162,9 @@
         </dependency>
         -->
 
+        <!-- spring use commons-logging as prior option,
+             so use jcl-over-slf4j.jar for invoking slf4j instead of commons-logging
+          -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -224,6 +227,15 @@
         </dependency>
         -->
 
+        <!-- hibernate use jboss.logging as prior option.
+             we can set system.property "org.jboss.logging.provider" = "slf4j",
+             and it will use slf4j instead of jboss.logging.
+             reference:
+                 org.jboss.logging.LoggerProviders
+                 org.jboss.logging.Logger
+                 org.hibernate.internal.CoreMessageLogger_$logger
+             version: 4.2.X
+          -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
