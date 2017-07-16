@@ -11,8 +11,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
 public class JettyLauncher {
 
     /**
-     * @param args
-     * @throws Exception
+     * @param args args
+     * @throws Exception exception
      */
     public static void main(String[] args) throws Exception {
 
@@ -37,6 +37,7 @@ public class JettyLauncher {
         server.start();
 
         server.join();
+
     }
 
 }
